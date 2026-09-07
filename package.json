@@ -1,0 +1,28 @@
+{
+  "name": "07sep-prisma-live-coding-starter",
+  "version": "1.0.0",
+  "description": "Starter skeleton for the Prisma + PostgreSQL intro challenge",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env src/server.js",
+    "prisma:generate": "node --env-file=.env node_modules/.bin/prisma generate",
+    "prisma:migrate": "node --env-file=.env node_modules/.bin/prisma migrate dev",
+    "prisma:studio": "node --env-file=.env node_modules/.bin/prisma studio",
+    "prisma:seed": "node --env-file=.env prisma/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^9.9.4"
+  },
+  "devDependencies": {
+    "@prisma/client": "6.19.3",
+    "prisma": "6.19.3"
+  }
+}
