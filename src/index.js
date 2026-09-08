@@ -1,35 +1,39 @@
 import { PrismaClient } from "./generated/prisma/client.ts";
 
-// Prisma Client ermöglicht den Zugriff auf die Datenbank.
 const prisma = new PrismaClient();
 
 async function main() {
-  // Verbindung zur PostgreSQL-Datenbank herstellen.
-  await prisma.$connect();
-  console.log("Verbindung zur Datenbank hergestellt.");
-
-  // Einen neuen User über das Prisma-Modell erstellen.
-  const newUser = await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
-      name: "Olha Khodakivska",
-      email: "olha@example.com",
+      name: "Test User",
+      email: `test-${Date.now()}@example.com`,
+      posts: {
+        create: {
+          title: "Mein erster Post",
+          content: "Prisma Relations lernen",
+        },
+      },
+    },
+    include: {
+      posts: true,
     },
   });
 
-  console.log("Neuer User:", newUser);
+  console.log("User mit Post:", user);
 
-  // Alle User über das Prisma-Modell abrufen.
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    include: {
+      posts: true,
+    },
+  });
 
-  console.log("Alle User:", users);
+  console.dir(users, { depth: null });
 }
 
 try {
   await main();
 } catch (error) {
-  console.error("Fehler beim Datenbankzugriff:", error);
+  console.error("Fehler:", error);
 } finally {
-  // Verbindung auch bei einem Fehler zuverlässig schließen.
   await prisma.$disconnect();
-  console.log("Datenbankverbindung geschlossen.");
 }
